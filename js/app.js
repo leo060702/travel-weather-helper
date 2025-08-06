@@ -56,40 +56,44 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // 路线查询
-  document.getElementById("routeBtn").addEventListener("click", function () {
-    const start = document.getElementById("startInput").value.trim();
-    const end = document.getElementById("endInput").value.trim();
+document.getElementById("routeBtn").addEventListener("click", function () {
+  const start = document.getElementById("startInput").value.trim();
+  const end = document.getElementById("endInput").value.trim();
 
-    if (!start || !end) {
-      output.innerHTML = "Please enter both start and end locations.";
-      return;
-    }
+  if (!start || !end) {
+    output.innerHTML = "Please enter both start and end locations.";
+    return;
+  }
 
-    directionsService.route(
-      {
-        origin: start,
-        destination: end,
-        travelMode: google.maps.TravelMode.DRIVING,
-      },
-      (response, status) => {
-        if (status === "OK") {
-          directionsRenderer.setDirections(response);
-          output.innerHTML = `Route from <strong>${start}</strong> to <strong>${end}</strong>:`;
+  const directionsService = new google.maps.DirectionsService();
+  const directionsRenderer = new google.maps.DirectionsRenderer();
+  directionsRenderer.setMap(map); // 设置到当前地图上
 
-          // 获取沿途关键点并查询天气（只取起点、中点、终点）
-          const path = response.routes[0].overview_path;
-          const points = [path[0], path[Math.floor(path.length / 2)], path[path.length - 1]];
+  directionsService.route(
+    {
+      origin: start,
+      destination: end,
+      travelMode: google.maps.TravelMode.DRIVING,
+    },
+    (response, status) => {
+      if (status === "OK") {
+        directionsRenderer.setDirections(response);
+        output.innerHTML = `Route from <strong>${start}</strong> to <strong>${end}</strong>:`;
 
-          forecastOutput.innerHTML = "";
-          points.forEach((point, index) => {
-            fetchWeather(point.lat(), point.lng(), `Stop ${index + 1}`);
-          });
-        } else {
-          output.innerHTML = "Route not found.";
-        }
+        const path = response.routes[0].overview_path;
+        const points = [path[0], path[Math.floor(path.length / 2)], path[path.length - 1]];
+        forecastOutput.innerHTML = "";
+
+        points.forEach((point, index) => {
+          fetchWeather(point.lat(), point.lng(), `Stop ${index + 1}`);
+        });
+      } else {
+        output.innerHTML = `Route not found. <br>Status: ${status}`;
+        console.warn("Route error:", status, response);
       }
-    );
-  });
+    }
+  );
+});
 
   // 获取天气信息
   function fetchWeather(lat, lng, label) {
@@ -114,3 +118,4 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 });
+
