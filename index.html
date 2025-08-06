@@ -14,12 +14,32 @@
 
   <main>
     <section class="search-section">
-      <input type="text" id="cityInput" placeholder="Enter a city...">
-      <button id="searchBtn">Check</button>
+      <div class="mode-switch">
+        <label>
+          <input type="radio" name="mode" value="single" checked>
+          Single City
+        </label>
+        <label>
+          <input type="radio" name="mode" value="route">
+          Route (From - To)
+        </label>
+      </div>
+
+      <div id="singleCityInput">
+        <input type="text" id="cityInput" placeholder="Enter a city...">
+        <button id="searchBtn">Check</button>
+      </div>
+
+      <div id="routeInput" style="display:none;">
+        <input type="text" id="startInput" placeholder="Start location">
+        <input type="text" id="endInput" placeholder="Destination">
+        <button id="routeBtn">Check Route</button>
+      </div>
     </section>
 
     <section class="info-section">
-      <div id="weatherOutput">Please enter a city to check weather.</div>
+      <div id="weatherOutput">Please enter a city or route to check weather.</div>
+      <div id="forecastOutput"></div>
       <div id="map" style="height:400px; width:100%; margin-top:1em;"></div>
     </section>
   </main>
