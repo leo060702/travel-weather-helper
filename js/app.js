@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const output = document.getElementById("weatherOutput");
   const forecastOutput = document.getElementById("forecastOutput");
 
-  // 切换输入模式
   modeRadios.forEach(radio => {
     radio.addEventListener("change", () => {
       if (radio.value === "single") {
@@ -30,7 +29,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // 单城市天气查询
   document.getElementById('searchBtn').addEventListener('click', function () {
     const city = document.getElementById('cityInput').value.trim();
     if (!city) {
@@ -50,7 +48,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // 路线查询
   document.getElementById("routeBtn").addEventListener("click", function () {
     const start = document.getElementById("startInput").value.trim();
     const end = document.getElementById("endInput").value.trim();
@@ -90,15 +87,12 @@ document.addEventListener("DOMContentLoaded", function () {
     );
   });
 
-  // 获取天气信息（当前 + 建议 + 美化）
   function fetchWeather(lat, lng, label) {
-    const today = new Date().toISOString().split("T")[0];
-    fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=temperature_2m_max,weathercode,windspeed_10m_max&current_weather=true&timezone=auto`)
+    fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=temperature_2m_max,temperature_2m_min,weathercode,windspeed_10m_max&current_weather=true&timezone=auto`)
       .then(res => res.json())
       .then(data => {
-        const w = data.current_weather;
-        const description = getWeatherDescription(w.weathercode);
-        const advice = getAdvice(w.weathercode, w.temperature);
+        const current = data.current_weather;
+        const daily = data.daily;
 
         const card = document.createElement("div");
         card.className = "weather-card";
@@ -109,12 +103,31 @@ document.addEventListener("DOMContentLoaded", function () {
         card.style.backgroundColor = "#f9f9f9";
 
         card.innerHTML = `
-          <h4>${label} (${today})</h4>
-          <p><strong>Temperature:</strong> ${w.temperature}&deg;C</p>
-          <p><strong>Wind:</strong> ${w.windspeed} km/h</p>
-          <p><strong>Condition:</strong> ${description}</p>
-          <p><strong>Advice:</strong> ${advice}</p>
+          <h4>${label} (Today)</h4>
+          <p><strong>Temperature:</strong> ${current.temperature}&deg;C</p>
+          <p><strong>Wind:</strong> ${current.windspeed} km/h</p>
+          <p><strong>Condition:</strong> ${getWeatherDescription(current.weathercode)}</p>
+          <p><strong>Advice:</strong> ${getAdvice(current.weathercode, current.temperature)}</p>
+          <hr>
+          <h4>Next 3 Days Forecast</h4>
         `;
+
+        for (let i = 1; i <= 3; i++) {
+          const date = daily.time[i];
+          const tempMax = daily.temperature_2m_max[i];
+          const tempMin = daily.temperature_2m_min[i];
+          const wind = daily.windspeed_10m_max[i];
+          const code = daily.weathercode[i];
+
+          card.innerHTML += `
+            <p><strong>${date}</strong><br>
+            🌡️ ${tempMin}°C - ${tempMax}°C<br>
+            💨 ${wind} km/h<br>
+            ☁️ ${getWeatherDescription(code)}<br>
+            🧥 ${getAdvice(code, tempMax)}</p>
+          `;
+        }
+
         forecastOutput.appendChild(card);
       })
       .catch(() => {
@@ -124,7 +137,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-  // 天气代码说明
   function getWeatherDescription(code) {
     const descriptions = {
       0: "Clear ☀️",
@@ -141,7 +153,6 @@ document.addEventListener("DOMContentLoaded", function () {
     return descriptions[code] || `Unknown (Code ${code})`;
   }
 
-  // 穿衣与驾驶建议
   function getAdvice(code, temp) {
     let drive = "Normal driving conditions.";
     let clothing = "Wear something comfortable.";
