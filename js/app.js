@@ -1,4 +1,3 @@
-// js/app.js
 let map;
 let geocoder;
 
@@ -8,6 +7,24 @@ function initMap() {
     zoom: 8,
   });
   geocoder = new google.maps.Geocoder();
+
+  // 自动补全（仅限单城市模式）
+  const input = document.getElementById("cityInput");
+  const autocomplete = new google.maps.places.Autocomplete(input, {
+    types: ["(cities)"]
+  });
+
+  autocomplete.addListener("place_changed", () => {
+    const place = autocomplete.getPlace();
+    if (!place.geometry || !place.geometry.location) {
+      alert("No details available for that input");
+      return;
+    }
+    const location = place.geometry.location;
+    map.setCenter(location);
+    new google.maps.Marker({ map: map, position: location });
+    fetchWeather(location.lat(), location.lng(), place.name);
+  });
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -174,33 +191,3 @@ document.addEventListener("DOMContentLoaded", function () {
     return `${drive} ${clothing}`;
   }
 });
-let map;
-let geocoder;
-
-function initMap() {
-  map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: 34.05, lng: -118.24 },
-    zoom: 8,
-  });
-  geocoder = new google.maps.Geocoder();
-
-  // 自动补全功能（仅用于单城市输入）
-  const input = document.getElementById("cityInput");
-  const autocomplete = new google.maps.places.Autocomplete(input, {
-    types: ["(cities)"] // 可改为 geocode 或为空放宽限制
-  });
-
-  autocomplete.addListener("place_changed", () => {
-    const place = autocomplete.getPlace();
-    if (!place.geometry || !place.geometry.location) {
-      alert("No details available for that input");
-      return;
-    }
-    const location = place.geometry.location;
-    map.setCenter(location);
-    new google.maps.Marker({ map: map, position: location });
-    fetchWeather(location.lat(), location.lng(), place.name);
-  });
-}
-
-
