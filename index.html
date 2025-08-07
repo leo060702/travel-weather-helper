@@ -1,52 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Travel Weather Helper</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
 </head>
 <body>
-  <header>
+  <header class="site-header">
     <h1>Travel Weather Helper</h1>
-    <p>Check weather and see location on map</p>
+    <p>Plan your trip with weather and route info</p>
   </header>
 
-  <main>
+  <main class="container">
     <section class="search-section">
       <div class="mode-switch">
         <label>
-          <input type="radio" name="mode" value="single" checked>
+          <input type="radio" name="mode" value="single" checked />
           Single City
         </label>
         <label>
-          <input type="radio" name="mode" value="route">
+          <input type="radio" name="mode" value="route" />
           Route (From - To)
         </label>
       </div>
 
-      <div id="singleCityInput">
-        <input type="text" id="cityInput" placeholder="Enter a city or place...">
+      <div id="singleCityInput" class="input-group">
+        <input type="text" id="cityInput" placeholder="Enter a city..." />
         <button id="searchBtn">Check</button>
       </div>
 
-      <div id="routeInput" style="display:none;">
-        <input type="text" id="startInput" placeholder="Start location">
-        <input type="text" id="endInput" placeholder="Destination">
+      <div id="routeInput" class="input-group" style="display: none;">
+        <input type="text" id="startInput" placeholder="Start location" />
+        <input type="text" id="endInput" placeholder="Destination" />
         <button id="routeBtn">Check Route</button>
       </div>
     </section>
 
     <section class="info-section">
-      <div id="weatherOutput">Please enter a city or route to check weather.</div>
-      <div id="forecastOutput"></div>
-      <div id="map" style="height:400px; width:100%; margin-top:1em;"></div>
+      <div id="weatherOutput" class="status-message">
+        Please enter a city or route to check weather.
+      </div>
+      <div id="forecastOutput" class="forecast-grid"></div>
+      <div id="map" style="height: 400px; width: 100%; margin-top: 1em;"></div>
     </section>
   </main>
 
-  <footer>
-    <p>© 2025 Travel Weather Helper</p>
+  <footer class="site-footer">
+    <p>&copy; 2025 Travel Weather Helper | Built with Google Maps & Open-Meteo APIs</p>
   </footer>
 
   <script src="js/app.js"></script>
