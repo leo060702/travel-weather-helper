@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Travel Weather Helper</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
   <header>
@@ -26,7 +27,7 @@
       </div>
 
       <div id="singleCityInput">
-        <input type="text" id="cityInput" placeholder="Enter a city...">
+        <input type="text" id="cityInput" placeholder="Enter a city or place...">
         <button id="searchBtn">Check</button>
       </div>
 
@@ -49,7 +50,6 @@
   </footer>
 
   <script src="js/app.js"></script>
-  <!-- Google Maps API (需要替换 YOUR_API_KEY) -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnv6qacWRaIcJF293bkGdKPfhjmn95Z48&callback=initMap" async defer></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnv6qacWRaIcJF293bkGdKPfhjmn95Z48&libraries=places&callback=initMap" async defer></script>
 </body>
 </html>
