@@ -1,60 +1,76 @@
-/* Responsive Styles for Travel Weather Helper */
+/* Responsive layout for Travel Weather Helper */
 
-@media (max-width: 768px) {
-  body {
-    font-size: 16px;
-    padding: 1rem;
+/* General container adjustments */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Make the search section wrap neatly */
+.search-section .search-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (min-width: 600px) {
+  .search-section .search-controls {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
   }
 
-  .search-section {
-    flex-direction: column;
-    align-items: stretch;
+  .inputs-wrapper {
+    display: flex;
+    gap: 0.5rem;
   }
 
-  .search-section input,
-  .search-section button {
-    width: 100%;
-    margin-bottom: 0.75rem;
+  .input-group {
+    display: flex;
+    gap: 0.5rem;
   }
 
-  .info-section {
-    padding: 1rem;
-  }
-
-  .weather-card {
-    width: 100%;
-    margin-bottom: 1rem;
+  .input-group input[type="text"] {
+    flex: 1;
   }
 }
 
-@media (min-width: 769px) {
-  .search-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
+/* Forecast grid cards layout */
+.forecast-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
 
-  #singleCityInput,
-  #routeInput {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
+@media (min-width: 768px) {
+  .forecast-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
+}
 
-  #singleCityInput input,
-  #routeInput input,
-  #singleCityInput button,
-  #routeInput button {
-    flex: 1;
-    min-width: 200px;
+@media (min-width: 1024px) {
+  .forecast-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
+}
 
-  .weather-card {
-    width: calc(33% - 1rem);
-    display: inline-block;
-    vertical-align: top;
-    margin: 0.5rem;
-  }
+/* Map full width */
+.map-container {
+  height: 400px;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+/* Centered text and spacing for header/footer */
+.site-header,
+.site-footer {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.site-footer {
+  font-size: 0.9rem;
+  color: #666;
 }
